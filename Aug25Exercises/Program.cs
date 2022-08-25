@@ -1,88 +1,76 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+
 namespace Aug25Exercises
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            int flag = 0;
-            do
+            string dir = @"D:\Sai";
+            if (!Directory.Exists(dir))
             {
-                Console.Write("1.ADD\n2.APPEND\n3.TRUNCATE\n4.READ\n");
-                string input = Console.ReadLine();
-                Console.WriteLine("EnterFilename");
-                string p = Console.ReadLine();
-                switch (input)
+                Directory.CreateDirectory(dir);
+            }
+            DirectoryInfo s = new DirectoryInfo(@"D:\Sai");
+            for (int i = 0; i < 3; i++)
+            {
+                String p = Console.ReadLine();
+                
+                    s.CreateSubdirectory(@p);
+                   
+                
+            }
+            string[] fnames=Directory.GetDirectories(@"D:\Sai");
+           
+            Console.WriteLine(fnames[0]);
+            for(int i = 0; i < 3; i++)
+            {
+                for(int j = 0; j < 2; j++)
                 {
-                    case "ADD":
-                        if (File.Exists(p))
-                        {
-                            Console.WriteLine("File already exists");
-                        }
-                        else
-                        {
-
-                            FileStream fs = new FileStream(p, FileMode.CreateNew, FileAccess.Write);
-                            StreamWriter sw = new StreamWriter(fs);
-                            sw.WriteLine("I am sai vignesh");
-                            fs.Flush();
-                            sw.Close();
-                            fs.Close();
-                            sw.Dispose();
-                            fs.Dispose();
-                        }
-                        break;
-                    case "APPEND":
-                        FileStream gs = new FileStream(p, FileMode.Append, FileAccess.Write);
-                        StreamWriter gw = new StreamWriter(gs);
-                        gw.WriteLine("I am saivignesh");
-                        gs.Flush();
-                        gw.Close();
-                        gs.Close();
-                        gw.Dispose();
-                        gs.Dispose();
-
-                        break;
-                    case "TRUNCATE":
-                        FileStream ps = new FileStream(p, FileMode.Truncate, FileAccess.Write);
-                        StreamWriter pw = new StreamWriter(ps);
-                        pw.WriteLine(" ");
-                        ps.Flush();
-                        pw.Close();
-                        ps.Close();
-                        pw.Dispose();
-                        ps.Dispose();
-
-                        break;
-                    case "READ":
-                        if (!File.Exists(p))
-                        {
-                            Console.Write("File does not exist");
-                        }
-                        else
-                        {
-                            FileStream ms = new FileStream(p, FileMode.Open, FileAccess.Read);
-                            StreamReader mw = new StreamReader(ms);
-                            string h = mw.ReadToEnd();
-                            Console.WriteLine(h);
-
-                            ms.Flush();
-                            mw.Close();
-                            ms.Close();
-                            mw.Dispose();
-                            ms.Dispose();
-                        }
-                        break;
-                    default:
-                        break;
+                    string k = Console.ReadLine();
+                    string v = string.Concat(fnames[i], k);
+                    File.Create(@v);
                 }
-                Console.WriteLine("Enter 1 to Continue");
-                int k = Convert.ToInt32(Console.ReadLine());
-                flag = k;
-            } while (flag != 0);
+            }
+            
+            for(int i = 0; i < 3; i++)
+            {
+                DirectoryInfo pa = new DirectoryInfo(fnames[i]);
+                for (int j = 0; j < 12; j++)
+                {
+                    var p= (Months)j+1;
+                    string r = p.ToString();
+                    pa.CreateSubdirectory(r);
+                    
+                }
+            }
+            for (int i = 0; i < 3; i++)
+            {
+
+                DirectoryInfo di = new DirectoryInfo(fnames[i]);
+                List<DirectoryInfo> subDirs =
+                    di.EnumerateDirectories().OrderBy(d=>d.CreationTime.Millisecond).ToList();
+               
+            }
+
             Console.ReadLine();
         }
+    }
+    enum Months
+    {
+        Jan=1,
+        Feb=2,
+        Mar=3,
+        Apr=4,
+        May=5,
+        June=6,
+        July=7,
+        Aug=8,
+        Sep=9,
+        Oct=10,
+        Nov=11,
+        Dec=12
     }
 }
